@@ -18,12 +18,25 @@ document.querySelector(".next_btn").addEventListener("click", function() {
         document.querySelector(".next_btn").classList.remove("show");
     } else {
         console.log("quiz bitti");
+        ui.quiz_box.classList.remove("active");
+        ui.score_box.classList.add("active");
+        ui.skoruGoster(quiz.sorular.length, quiz.dogruCevapSayisi);
     }
 });
 
-/*const option = option_list.querySelectorAll(".option");
-const correctIcon = '<div class="icon"><i class="fas fa-check"></i></div>';
-const incorrectIcon = '<div class="icon"><i class="fas fa-times"></i></div>';*/
+
+ui.quit_btn.addEventListener("click", function() {
+    window.location.reload();
+})
+ui.replay_btn.addEventListener("click", function() {
+    quiz.soruIndex = 0;
+    quiz.dogruCevapSayisi = 0;
+    ui.btn_start.click();
+    ui.score_box.classList.remove("active");
+
+
+})
+
 
 
 function option_selected(option) {
@@ -31,6 +44,7 @@ function option_selected(option) {
         let soru = quiz.soruGetir();
 
         if(soru.cevabiKontrolEt(cevap)) {
+            quiz.dogruCevapSayisi+=1;
             option.classList.add("correct");
             option.insertAdjacentHTML("before end", this.correctIcon);
         } else {
