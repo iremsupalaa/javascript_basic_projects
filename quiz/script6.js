@@ -5,6 +5,8 @@ const ui = new UI();
 
 ui.btn_start.addEventListener("click", function() {
     ui.quiz_box.classList.add("active");
+    startTimer(10);
+    startTimerLine();
     ui.soruGoster(quiz.soruGetir());
     ui. soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length);
     ui.next_btn.classList.remove("show");
@@ -13,11 +15,14 @@ ui.btn_start.addEventListener("click", function() {
 document.querySelector(".next_btn").addEventListener("click", function() {
     if (quiz.sorular.length != quiz.soruIndex + 1) {
         quiz.soruIndex += 1;
+        clearInterval(counter);
+        clearInterval(counterLine);
+        startTimer(10);
         ui.soruGoster(quiz.soruGetir());
         ui.soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length);
         document.querySelector(".next_btn").classList.remove("show");
     } else {
-        console.log("quiz bitti");
+        clearInterval(counter);
         ui.quiz_box.classList.remove("active");
         ui.score_box.classList.add("active");
         ui.skoruGoster(quiz.sorular.length, quiz.dogruCevapSayisi);
@@ -40,6 +45,8 @@ ui.replay_btn.addEventListener("click", function() {
 
 
 function option_selected(option) {
+    clearInterval(counter);
+    clearInterval(counterLine);
         let cevap = option.querySelector("span b").textContent;
         let soru = quiz.soruGetir();
 
@@ -60,3 +67,51 @@ function option_selected(option) {
         ui.next_btn.classList.add("show"); 
  }
 
+    let counter; function timer() {
+
+
+    function startTimer(time) { //timer isimli fonksiyonu 1000sn boyunca çalıştır
+      counter = setInterval(timer, 1000);
+
+ 
+        ui.time_second.textContent = time;
+        time--; 
+    
+        if(time < 0) {
+            clearInterval(counter);
+            ui.time_text.textContent = "Süre Bitti"
+
+            let cevap = quiz.soruGetir().dogruCevap;
+
+            for(let option of ui.option_list.chidren) {
+                if(option.querySelector("span b").textContent == cevap) {
+                    option.classList.add("correct");
+                    option.insertAdjacentHTML("beforeend", ui.correctIcon)
+                } 
+
+                option.classList.add("disabled");
+            }
+            
+            ui.next_btn.classList.add("show");
+
+        }
+
+
+    }
+
+    let counterLine;
+    function startTimerLine() {
+        let time = 0;
+
+        counterLine = setInterval(timer, 20);
+
+        function timer() {
+            line_width += 1;
+            ui.time_line.style.width = line_width + "px";
+
+            if(line_width > 549) {
+                clearInterval(counterLine); 
+            }
+        }
+    }
+ }
