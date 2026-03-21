@@ -1,3 +1,16 @@
+
+document.getElementById('new-course').addEventListener('submit',
+    
+    function(e){
+        const title = document.getElementById('title').value;
+        const instructor = document.getElementById('instructor').value;
+        const image = document.getElementById('image');
+
+
+        e.preventDefault();
+
+
+
 // Course constructor
 function Course(title,instructor ,image){
     this.title = title;
@@ -85,4 +98,5 @@ document.getElementById('course-list').addEventListener('click',function(e){
     const ui = new UI();
     ui.deleteCourse(e.target);
     ui.showAlert('the course has been deleted','danger');
+
 });
